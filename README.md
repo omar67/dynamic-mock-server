@@ -9,7 +9,13 @@ Simply we are calling a list of apis. When ever the first api fail, we are calli
 ## Let's get started
 
 1. First of all you need enter the list of URLs in the <b>config.js</b> file
-2. Then you are ready to use the server, by simply calling the api. For example "http://127.0.0.1:XXXX/users". Where the "http://127.0.0.1" is the local server (Dynamic Mock Server) and "XXXX" is the Port number.
+2. After that simply run the server using
+
+```npm
+npm run start
+```
+
+3. Then you are ready to use the server, by simply calling the api. For example "http://127.0.0.1:XXXX/users". Where the "http://127.0.0.1" is the local server (Dynamic Mock Server) and "XXXX" is the Port number.
 
 ### Supported request methods
 
