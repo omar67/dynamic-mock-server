@@ -6,6 +6,7 @@ var logger = require("morgan");
 const db = require("./data/db");
 
 var indexRouter = require("./routes/index");
+var adminRouter = require("./routes/admin");
 
 const { default: axios } = require("axios");
 const { handleMockServer } = require("./controller/controller");
@@ -24,6 +25,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
+app.use("/admin", adminRouter);
 
 // init db
 db.sequelize.sync();
