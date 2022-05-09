@@ -10,7 +10,7 @@ var adminRouter = require("./routes/admin");
 
 const { default: axios } = require("axios");
 const { handleMockServer } = require("./controller/controller");
-const { addUrl, getAllUrls, deleteAll } = require("./data/data_access/urlDA");
+const { deleteUrl, addUrl } = require("./data/data_access/urlDA");
 
 var app = express();
 
@@ -26,6 +26,29 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/admin", adminRouter);
+
+app.post("/delete/:id", async (req, res, next) => {
+  const { id } = req.params;
+  return await deleteUrl(id)
+    .then((d) => {
+      res.send("Deleted successfully");
+    })
+    .catch((e) => {
+      res.send("Error deleting");
+    });
+});
+
+app.post("/add", (req, res, next) => {
+  const { host, method } = req.body;
+  if (!host) return res.status(400).send("Missing host params");
+  addUrl(host, method ?? "POST")
+    .then((d) => {
+      res.status(201).send("Added successfully");
+    })
+    .catch((e) => {
+      res.status(400).send("Failed to add");
+    });
+});
 
 // init db
 db.sequelize.sync();
