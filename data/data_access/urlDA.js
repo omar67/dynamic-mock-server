@@ -4,8 +4,8 @@ async function addUrl(host, method) {
   return await Url.create({ host, method });
 }
 
-async function deleteUrl(host) {
-  return Url.destroy({ where: { host } });
+async function deleteUrl(id) {
+  return Url.destroy({ where: { id } });
 }
 async function deleteAll() {
   return Url.destroy({ truncate: true });
