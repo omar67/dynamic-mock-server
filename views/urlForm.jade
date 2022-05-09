@@ -1,0 +1,21 @@
+h1 URLs
+p The following URLs are being called to retrieve the data from the API. When the first URL fail to return data, the second URL is called.
+- if (urls.length == 0)
+  ul 
+    li No URLs added yet
+- else 
+  ol
+    each url in urls
+      li=url.host 
+        button(onclick='', class="btn btn-success m-1" disabled) <i class="bi bi-arrow-down-circle"></i>
+        button(onclick='deleteUrl("'+url.id+'", "'+url.host+'")', class="btn btn-danger m-1" ) Delete
+        button(onclick='', class="btn btn-success m-1" disabled) <i class="bi bi-arrow-up-circle"></i>
+
+h2 Add new URL
+p Adding a new base url to the list
+
+    div(class="input-group mb-3")      
+        span(span class="input-group-text" id="basic-addon1" ) URL
+        input(id="url" type="text", name="host", class="form-control" placeholder="http://example.com", required="required") 
+        button(type="button" class="btn btn-primary" onclick='handleForm()') Add 
+br

@@ -1,0 +1,26 @@
+h1 Paths - under development
+p Here are the list of paths that can be modified to use a single Base URL
+    
+   
+ul
+    li PATH_NAME
+        select(class="m-1" aria-label="Default select example")
+            option(selected) Select an API
+            each url in urls 
+                option=url.host
+
+
+        
+  
+  
+
+  //- each url in urls
+    //- li=url.host 
+      button(onclick='deleteUrl("'+url.id+'", "'+url.host+'")', class="btn btn-danger") Delete
+
+h2 Add new Path
+p Adding a new Path to the list
+    div(class="input-group mb-3")      
+        span(span class="input-group-text" id="basic-addon1") Path 
+        input(id="url" type="text", name="host", class="form-control" placeholder="/path", required="required") 
+        button(type="button" class="btn btn-primary") Add 
