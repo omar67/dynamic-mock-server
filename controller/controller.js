@@ -2,6 +2,7 @@ const { default: axios } = require("axios");
 const { accepts } = require("express/lib/request");
 const createError = require("http-errors");
 const { urls } = require("../config");
+const { getAllUrls } = require("../data/data_access/urlDA");
 var axiosService = axios;
 
 async function handleMockServer(req, res, next) {
@@ -24,7 +25,8 @@ async function handleMockServer(req, res, next) {
  * @returns {Object}
  */
 async function getRequestHelper(req) {
-  return await getRequest(req, urls[0], 0);
+  console.log("Url :", (await getUrls())[0]);
+  return await getRequest(req, (await getUrls())[0], 0);
 }
 
 /**
@@ -36,10 +38,10 @@ async function getRequest(req, url, index) {
   try {
     let response = await axiosService.get(url + req.originalUrl);
     if (isSuccess(response.status)) return response?.data ?? undefined;
-    else return await getRequest(req, urls[index], index + 1);
+    else return await getRequest(req, (await getUrls())[index], index + 1);
   } catch (e) {
     console.error("Exception thrown:", e);
-    return await getRequest(req, urls[index], index + 1);
+    return await getRequest(req, (await getUrls())[index], index + 1);
   }
 }
 
@@ -49,7 +51,7 @@ async function getRequest(req, url, index) {
  * @returns {Object}
  */
 async function postRequestHelper(req) {
-  return await postRequest(req, urls[0], 0);
+  return await postRequest(req, (await getUrls())[0], 0);
 }
 
 /**
@@ -60,10 +62,10 @@ async function postRequest(req, url, index) {
   try {
     let response = await axiosService.post(url + req.originalUrl, req.body);
     if (isSuccess(response.status)) return response?.data ?? undefined;
-    else return await postRequest(req, urls[index], index + 1);
+    else return await postRequest(req, (await getUrls())[index], index + 1);
   } catch (e) {
     console.error("Exception thrown:", e);
-    return await postRequest(req, urls[index], index + 1);
+    return await postRequest(req, (await getUrls())[index], index + 1);
   }
 }
 
@@ -73,7 +75,7 @@ async function postRequest(req, url, index) {
  * @returns {Object}
  */
 async function patchRequestHelper(req) {
-  return await patchRequest(req, urls[0], 0);
+  return await patchRequest(req, (await getUrls())[0], 0);
 }
 
 /**
@@ -85,10 +87,10 @@ async function patchRequest(req, url, index) {
   try {
     let response = await axiosService.patch(url + req.originalUrl, req.body);
     if (isSuccess(response.status)) return response?.data ?? undefined;
-    else return await patchRequest(req, urls[index], index + 1);
+    else return await patchRequest(req, (await getUrls())[index], index + 1);
   } catch (e) {
     console.error("Exception thrown:", e);
-    return await patchRequest(req, urls[index], index + 1);
+    return await patchRequest(req, (await getUrls())[index], index + 1);
   }
 }
 
@@ -100,6 +102,13 @@ function isSuccess(code) {
   return code >= 200 && code < 300;
 }
 
+/**
+ * Return the list of urls
+ * @returns {Array<String>} List of Urls
+ */
+async function getUrls() {
+  return await (await getAllUrls()).map((data) => data.host);
+}
 module.exports = {
   handleMockServer,
 };
