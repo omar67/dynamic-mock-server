@@ -5,6 +5,14 @@ const Url = sequelize.define(
   "Url",
   {
     // Model attributes are defined here
+    name: {
+      type: DataTypes.STRING,
+    },
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     host: {
       type: DataTypes.STRING,
       allowNull: false,
