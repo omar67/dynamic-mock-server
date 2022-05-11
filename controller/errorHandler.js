@@ -1,3 +1,6 @@
+/**
+ * The error handler displays the error to the client side based on environment selection
+ */
 module.exports = function errorHandler(error, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = error.message;

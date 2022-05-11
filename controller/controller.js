@@ -9,6 +9,10 @@ const { getRequestConfig } = require("./axiosConfig");
 
 var axiosService = axios;
 
+/**
+ * The main controller for the mock server. which handles all of the requests and send
+ * the response back to client. in case of failure jump to next function
+ */
 async function handleMockServer(req, res, next) {
   axiosService = axios.create({});
 
@@ -20,6 +24,11 @@ async function handleMockServer(req, res, next) {
   }
 }
 
+/**
+ * Request handler determines what is the current received request, and resend it back
+ * to the server
+ * @returns
+ */
 async function requestHandler(req) {
   let urls = await getUrls();
   let path = await findPath(req.originalUrl, req.method);
@@ -70,7 +79,7 @@ async function getRequest(req, urls, index) {
     if (isSuccess(response.status)) return response?.data ?? undefined;
     else return await getRequest(req, urls, index + 1);
   } catch (e) {
-    // console.error("Exception thrown:", e);
+    console.error("Exception thrown:", e);
     return await getRequest(req, urls, index + 1);
   }
 }
@@ -130,12 +139,11 @@ async function patchRequest(req, urls, index) {
     if (isSuccess(response.status)) return response?.data ?? undefined;
     else return await patchRequest(req, urls, index + 1);
   } catch (e) {
-    console.log("request api", req.headers);
-    // console.error("Exception thrown:", e.response);
+    console.error("Exception thrown:", e);
     return await patchRequest(req, urls, index + 1);
   }
 }
-
+// -- Utils --
 /**
  * Determine whether the response is success status code.
  * @param {Number} code

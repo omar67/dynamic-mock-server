@@ -1,4 +1,15 @@
-// return the axios Configuration for form-data
+/**
+ * This file contains the axios configuration
+ * for each body. Currently the following types are supported
+ * - form-data
+ * - x-www-form-urlencoded
+ * - application/json | json
+ *
+ * The configuration was created due to some failure in APIs handling the request.
+ * The axios configuration solves these issues
+ */
+
+// Return the axios Configuration for form-data
 function getFormDataConfig(headers, body, method) {
   let data = FormData();
   // generate FormData object from json
@@ -75,8 +86,5 @@ function getRequestConfig(req, method) {
 }
 
 module.exports = {
-  getUrlEncodedConfig,
-  getJsonDataConfig,
   getRequestConfig,
-  getFormDataConfig,
 };
