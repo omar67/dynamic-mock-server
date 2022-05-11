@@ -5,10 +5,13 @@ block content
   p Welcome to #{title}
   p where we don't need to worry about the APIs world anymore. Every api must work 
   h2 How it works 
-  p Simply we are calling a list of apis. When ever the first api fail, we are calling the next api!.
+  p Simply the system is calling a list of apis. When ever the first api fail, we are calling the next api!.
   h2 Lets try it out
-  p All you need to do it enter the list of URLs in the config.js file. Then simple type your patch. For example "http://127.0.0.1:XXXX/users". Where the "http://127.0.0.1" is the local server (#{title}) and "XXXX" is the Port number
+  p All you need to do it enter the list of URLs in the admin page. Then simple type your patch.
+  p For example "http://MOCK_SERVER_URL/users". Where the "MOCK_SERVER_URL" is the Mock server url (#{title}) and "users" is the path you want the response from.
 
+  h2 Configuration
+  p In order to configure the Mock Server you need to go to the admin page http://MOCK_SERVER_URL/admin
   h2 Current supported request methods 
   <ul> 
   <li>POST</li>
