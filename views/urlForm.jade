@@ -1,3 +1,38 @@
+script.
+      var deleteUrl = function(id, host) {
+        if(!confirm('Are you sure you want to delete this item: '+host+' ?')) 
+          return;
+        fetch("/url/delete/" + id, {
+          method: "POST"
+        }).then(data => {
+        location.reload();
+        }).catch(e => {
+          alert("Failed"+ e)
+        })
+      }
+      var handleForm = () => {
+        let host = document.getElementById('url').value;
+        addUrl(host, host);
+      }
+
+      var addUrl = (url, method) => {
+        if(!url)
+          return alert("Please enter valid URL");
+        fetch("/url/add/", {
+          method: "POST",
+          body: new URLSearchParams({
+          host: url,
+            method: method??"POST"
+          })
+        }).then(data => {
+        location.reload();
+        }).catch(e => {
+          alert("Failed"+ e)
+        })
+
+      }
+
+
 h1 URLs
 p The following URLs are being called to retrieve the data from the API. When the first URL fail to return data, the second URL is called.
 - if (urls.length == 0)
@@ -7,15 +42,15 @@ p The following URLs are being called to retrieve the data from the API. When th
   ol
     each url in urls
       li=url.host 
-        button(onclick='', class="btn btn-success m-1" disabled) <i class="bi bi-arrow-down-circle"></i>
-        button(onclick='deleteUrl("'+url.id+'", "'+url.host+'")', class="btn btn-danger m-1" ) Delete
-        button(onclick='', class="btn btn-success m-1" disabled) <i class="bi bi-arrow-up-circle"></i>
+        button(class="btn btn-success m-1", onclick='', disabled) <i class="bi bi-arrow-down-circle"></i>
+        button(class="btn btn-danger m-1", onclick='deleteUrl("'+url.id+'", "'+url.host+'")') Delete
+        button(class="btn btn-success m-1", onclick='', disabled) <i class="bi bi-arrow-up-circle"></i>
 
 h2 Add new URL
 p Adding a new base url to the list
-
+  form( method="post") 
     div(class="input-group mb-3")      
-        span(span class="input-group-text" id="basic-addon1" ) URL
-        input(id="url" type="text", name="host", class="form-control" placeholder="http://example.com", required="required") 
-        button(type="button" class="btn btn-primary" onclick='handleForm()') Add 
+        span(class="input-group-text" id="basic-addon1" span) URL
+        input(class="form-control", id="url", name="host", type="text", placeholder="http://example.com", required="required") 
+        button(class="btn btn-primary" type="submit" onclick='handleForm()') Add 
 br

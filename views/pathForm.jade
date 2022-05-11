@@ -1,26 +1,97 @@
+head 
+    script.
+
+        var deletePath = function(id, path) {
+            if(!confirm('Are you sure you want to delete this item: '+path+' ?')) 
+            return;
+            fetch("/path/delete/" + id, {
+            method: "POST"
+            }).then(data => {
+            location.reload();
+            }).catch(e => {
+            alert("Failed"+ e)
+            })
+        }
+
+        var changeUrl = (url, id) => {
+            fetch("/path/update/", {
+            method: "POST",
+            body: new URLSearchParams({
+            id: id,
+            url: url
+            })
+            }).then(data => {
+            location.reload();
+            }).catch(e => {
+            alert("Failed"+ e)
+            })
+        }
+        var addPath = (path, method) => {
+            if(!path || !method)
+            return alert("Please enter valid Path/Method");
+            fetch("/path/add/", {
+            method: "POST",
+            body: new URLSearchParams({
+            path: path,
+            method: method??"GET"
+            })
+            }).then(data => {
+            location.reload();
+            }).catch(e => {
+            alert("Failed"+ e)
+            })
+        }
+        var handlePathButton = () => {
+            let path = document.getElementById('path').value;
+            let method = document.getElementById('method').value;
+            addPath(path, method);
+        }
+
 h1 Paths - under development
 p Here are the list of paths that can be modified to use a single Base URL
     
    
-ul
-    li PATH_NAME
-        select(class="m-1" aria-label="Default select example")
-            option(selected) Select an API
-            each url in urls 
-                option=url.host
+table.table
+  thead
+    tr
+      th(scope='col') ID
+      th(scope='col') Path
+      th(scope='col') Method
+      th(scope='col') URL
+      th(scope='col') Operation
+  tbody
+    - if (paths.length == 0)
+        th(scope='row')
+            td No paths found!
 
+    each path in paths
+        tr
+            th(scope='row')=path.id
+            td=path.path
+            td=path.method
+            td
+              select(class=" form-control m-1", aria-label="Default select example", onChange="changeUrl(this.value, "+path.id+")")
+                - if(path.host)
+                    option(selected value=path.host)=path.host
+                -else 
+                    option(selected) Select a URL
 
-        
-  
-  
+                each url in urls 
+                    option=url.host
+            td
+                button(class="btn btn-danger m-1", onclick='deletePath("'+path.id+'", "'+path.path+'")') Delete  
 
-  //- each url in urls
-    //- li=url.host 
-      button(onclick='deleteUrl("'+url.id+'", "'+url.host+'")', class="btn btn-danger") Delete
 
 h2 Add new Path
 p Adding a new Path to the list
-    div(class="input-group mb-3")      
-        span(span class="input-group-text" id="basic-addon1") Path 
-        input(id="url" type="text", name="host", class="form-control" placeholder="/path", required="required") 
-        button(type="button" class="btn btn-primary") Add 
+    form( method="post") 
+        div(class="input-group mb-3")      
+            span(class="input-group-text" id="basic-addon1" span) Path 
+            input(class="form-control", id="path", name="host", type="text", placeholder="/path", required="required") 
+        div(class="input-group mb-3")      
+            span(class="input-group-text" id="basic-addon2" span) Request Method 
+            select(class="form-control" id="method" name="method")
+                option(value="GET") GET
+                option(value="POST") POST
+                option(value="PATCH") PATCH
+        button(class="btn btn-primary" type="submit" onclick='handlePathButton()') Add 
