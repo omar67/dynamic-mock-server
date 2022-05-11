@@ -1,4 +1,3 @@
-var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
@@ -7,10 +6,13 @@ const db = require("./data/db");
 
 var indexRouter = require("./routes/index");
 var adminRouter = require("./routes/admin");
+var urlRouter = require("./routes/url");
+var pathRouter = require("./routes/path");
 
-const { default: axios } = require("axios");
 const { handleMockServer } = require("./controller/controller");
-const { deleteUrl, addUrl } = require("./data/data_access/urlDA");
+
+// init db
+db.sequelize.sync();
 
 var app = express();
 
@@ -20,43 +22,17 @@ app.set("view engine", "jade");
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/admin", adminRouter);
+app.use("/url", urlRouter);
+app.use("/path", pathRouter);
 
-app.post("/delete/:id", async (req, res, next) => {
-  const { id } = req.params;
-  return await deleteUrl(id)
-    .then((d) => {
-      res.send("Deleted successfully");
-    })
-    .catch((e) => {
-      res.send("Error deleting");
-    });
-});
-
-app.post("/add", (req, res, next) => {
-  const { host, method } = req.body;
-  if (!host) return res.status(400).send("Missing host params");
-  addUrl(host, method ?? "POST")
-    .then((d) => {
-      res.status(201).send("Added successfully");
-    })
-    .catch((e) => {
-      res.status(400).send("Failed to add");
-    });
-});
-
-// init db
-db.sequelize.sync();
-
-// catch 404 and forward to error handler
+// Catch all paths other than the predefined ones
 app.use(async function (req, res, next) {
-  // next(createError(404));
-  // next(middleware(req, res, next));
   handleMockServer(req, res, next);
 });
 
