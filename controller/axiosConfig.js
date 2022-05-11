@@ -8,7 +8,8 @@
  * The configuration was created due to some failure in APIs handling the request.
  * The axios configuration solves these issues
  */
-
+var qs = require("qs");
+const FormData = require("form-data");
 // Return the axios Configuration for form-data
 function getFormDataConfig(headers, body, method) {
   let data = FormData();

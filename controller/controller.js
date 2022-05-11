@@ -1,9 +1,6 @@
 const { default: axios } = require("axios");
-const createError = require("http-errors");
 const { getAllPaths, getPath } = require("../data/data_access/pathDA");
 const { getAllUrls } = require("../data/data_access/urlDA");
-var qs = require("qs");
-const FormData = require("form-data");
 const MyGenericError = require("../data/errors/MyGenricError");
 const { getRequestConfig } = require("./axiosConfig");
 
