@@ -10,6 +10,8 @@ var urlRouter = require("./routes/url");
 var pathRouter = require("./routes/path");
 
 const { handleMockServer } = require("./controller/controller");
+const errorLogger = require("./controller/errorLogger");
+const errorHandler = require("./controller/errorHandler");
 
 // init db
 db.sequelize.sync();
@@ -32,19 +34,11 @@ app.use("/url", urlRouter);
 app.use("/path", pathRouter);
 
 // Catch all paths other than the predefined ones
-app.use(async function (req, res, next) {
-  handleMockServer(req, res, next);
-});
+app.use(handleMockServer);
+// error logger
+app.use(errorLogger);
 
 // error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
-});
+app.use(errorHandler);
 
 module.exports = app;
