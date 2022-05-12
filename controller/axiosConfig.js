@@ -64,7 +64,7 @@ function getJsonDataConfig(headers, body, method) {
  * @returns {import("axios").AxiosRequestConfig} Axios's request configuration
  */
 function getRequestConfig(req, method) {
-  let contentType = req.headers["content-type"];
+  let contentType = req.headers["content-type"] ?? "";
 
   // delete unnecessary headers
   delete req.headers["content-length"];
