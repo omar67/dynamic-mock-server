@@ -67,11 +67,12 @@ function createURLsError() {
  */
 async function getRequest(req, urls, index) {
   if (urls.length === index) return createURLsError();
+  let url = urls[index] + req.originalUrl;
 
   try {
     let response = await axiosService({
-      url: urls[index] + req.originalUrl,
-      ...getRequestConfig(req, "get"),
+      url,
+      ...getRequestConfig(url, req, "get"),
     });
     if (isSuccess(response.status)) return response?.data ?? undefined;
     else return await getRequest(req, urls, index + 1);
@@ -97,10 +98,11 @@ async function postRequestHelper(req, urls, path) {
  */
 async function postRequest(req, urls, index) {
   if (urls.length === index) return createURLsError();
+  let url = urls[index] + req.originalUrl;
   try {
     let response = await axiosService({
-      url: urls[index] + req.originalUrl,
-      ...getRequestConfig(req, "post"),
+      url,
+      ...getRequestConfig(url, req, "post"),
     });
 
     if (isSuccess(response.status)) return response?.data ?? undefined;
@@ -127,11 +129,12 @@ async function patchRequestHelper(req, urls, path) {
  */
 async function patchRequest(req, urls, index) {
   if (urls.length === index) return createURLsError();
+  let url = urls[index] + req.originalUrl;
 
   try {
     let response = await axiosService({
-      url: urls[index] + req.originalUrl,
-      ...getRequestConfig(req, "patch"),
+      url,
+      ...getRequestConfig(url, req, "patch"),
     });
     if (isSuccess(response.status)) return response?.data ?? undefined;
     else return await patchRequest(req, urls, index + 1);

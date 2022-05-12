@@ -26,7 +26,6 @@ function getFormDataConfig(headers, body, method) {
       "Accept-Encoding": "gzip,deflate,br",
       Connection: "keep-alive",
       "Connection-Type": "application/json",
-      "x-api-key": "liCENcCCGpHUsEPHNhySYGXCnmhwzZ",
       ...data.getHeaders(),
     },
     data: data,
@@ -63,8 +62,12 @@ function getJsonDataConfig(headers, body, method) {
 /** Returns the post request configuration for Axios client
  * @returns {import("axios").AxiosRequestConfig} Axios's request configuration
  */
-function getRequestConfig(req, method) {
+function getRequestConfig(url, req, method) {
   let contentType = req.headers["content-type"] ?? "";
+
+  if (url.includes("mock.pstmn.io"))
+    // current url is a Postman Mockserver
+    delete req.headers["x-api-key"];
 
   // delete unnecessary headers
   delete req.headers["content-length"];
