@@ -76,9 +76,9 @@ async function getRequest(req, urls, index) {
       ...getRequestConfig(url, req, "get"),
     });
     if (isSuccess(response.status)) return response?.data ?? undefined;
-    else return await getRequest(req, urls, index + 1);
+    return await getRequest(req, urls, index + 1);
   } catch (e) {
-    logApiFailure(url, e.response.status, JSON.stringify(e));
+    prettyLogError(e);
     return await getRequest(req, urls, index + 1);
   }
 }
@@ -100,6 +100,7 @@ async function postRequestHelper(req, urls, path) {
 async function postRequest(req, urls, index) {
   if (urls.length === index) return createURLsError();
   let url = urls[index] + req.originalUrl;
+
   try {
     let response = await axiosService({
       url,
@@ -109,7 +110,7 @@ async function postRequest(req, urls, index) {
     if (isSuccess(response.status)) return response?.data ?? undefined;
     else return await postRequest(req, urls, index + 1);
   } catch (e) {
-    logApiFailure(url, e.response.status, JSON.stringify(e));
+    prettyLogError(e);
     return await postRequest(req, urls, index + 1);
   }
 }
@@ -140,7 +141,7 @@ async function patchRequest(req, urls, index) {
     if (isSuccess(response.status)) return response?.data ?? undefined;
     else return await patchRequest(req, urls, index + 1);
   } catch (e) {
-    logApiFailure(url, e.response.status, JSON.stringify(e));
+    prettyLogError(e);
     return await patchRequest(req, urls, index + 1);
   }
 }
@@ -175,6 +176,13 @@ function getPathUrl(urls, path) {
     return url == path.host;
   });
 }
+
+// Pretty prints request errors to the log
+function prettyLogError(error) {
+  console.error("Request failed with: ", error.message, error.code);
+  console.error("Failing URL is: ", error.config.url);
+}
+
 module.exports = {
   handleMockServer,
 };
