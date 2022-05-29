@@ -3,6 +3,7 @@ const { getAllPaths, getPath } = require("../data/data_access/pathDA");
 const { getAllUrls } = require("../data/data_access/urlDA");
 const MyGenericError = require("../data/errors/MyGenricError");
 const { getRequestConfig } = require("./axiosConfig");
+const { logApiFailure } = require("./MyLogger");
 
 var axiosService = axios;
 
@@ -27,8 +28,8 @@ async function handleMockServer(req, res, next) {
  * @returns
  */
 async function requestHandler(req) {
-  let urls = await getUrls();
-  let path = await findPath(req.originalUrl, req.method);
+  let urls = await getUrls(); // get all the urls
+  let path = await findPath(req.originalUrl, req.method); // get all the predefined paths objects
   var response = "";
 
   if (req.method == "GET") response = await getRequestHelper(req, urls, path);
@@ -77,7 +78,7 @@ async function getRequest(req, urls, index) {
     if (isSuccess(response.status)) return response?.data ?? undefined;
     else return await getRequest(req, urls, index + 1);
   } catch (e) {
-    console.error("Exception thrown:", e);
+    logApiFailure(url, e.response.status, JSON.stringify(e));
     return await getRequest(req, urls, index + 1);
   }
 }
@@ -108,7 +109,7 @@ async function postRequest(req, urls, index) {
     if (isSuccess(response.status)) return response?.data ?? undefined;
     else return await postRequest(req, urls, index + 1);
   } catch (e) {
-    console.error("Exception thrown:", e);
+    logApiFailure(url, e.response.status, JSON.stringify(e));
     return await postRequest(req, urls, index + 1);
   }
 }
@@ -139,7 +140,7 @@ async function patchRequest(req, urls, index) {
     if (isSuccess(response.status)) return response?.data ?? undefined;
     else return await patchRequest(req, urls, index + 1);
   } catch (e) {
-    console.error("Exception thrown:", e);
+    logApiFailure(url, e.response.status, JSON.stringify(e));
     return await patchRequest(req, urls, index + 1);
   }
 }
