@@ -78,7 +78,7 @@ async function getRequest(req, urls, index) {
     if (isSuccess(response.status)) return response?.data ?? undefined;
     return await getRequest(req, urls, index + 1);
   } catch (e) {
-    prettyLogError(e);
+    logApiFailure(url, e.response.status, JSON.stringify(e));
     return await getRequest(req, urls, index + 1);
   }
 }
@@ -110,7 +110,7 @@ async function postRequest(req, urls, index) {
     if (isSuccess(response.status)) return response?.data ?? undefined;
     else return await postRequest(req, urls, index + 1);
   } catch (e) {
-    prettyLogError(e);
+    logApiFailure(url, e.response.status, JSON.stringify(e));
     return await postRequest(req, urls, index + 1);
   }
 }
@@ -141,7 +141,7 @@ async function patchRequest(req, urls, index) {
     if (isSuccess(response.status)) return response?.data ?? undefined;
     else return await patchRequest(req, urls, index + 1);
   } catch (e) {
-    prettyLogError(e);
+    logApiFailure(url, e.response.status, JSON.stringify(e));
     return await patchRequest(req, urls, index + 1);
   }
 }
