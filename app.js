@@ -8,12 +8,14 @@ const db = require("./data/db");
 
 var indexRouter = require("./routes/index");
 var adminRouter = require("./routes/admin");
+var errorRouter = require("./routes/error");
 var urlRouter = require("./routes/url");
 var pathRouter = require("./routes/path");
 
 const { handleMockServer } = require("./controller/controller");
 const errorLogger = require("./controller/errorLogger");
 const errorHandler = require("./controller/errorHandler");
+const { initRouter } = require("./routes/router");
 
 // init db
 db.sequelize.sync();
@@ -30,13 +32,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
-app.use("/admin", adminRouter);
-app.use("/url", urlRouter);
-app.use("/path", pathRouter);
+let paths = {
+  "/": indexRouter,
+  "/admin": adminRouter,
+  "/url": urlRouter,
+  "/path": pathRouter,
+  "/error": errorRouter,
+};
+// init the application router
+initRouter(app, paths);
 
 // Catch all paths other than the predefined ones
 app.use(handleMockServer);
+
 // error logger
 app.use(errorLogger);
 
