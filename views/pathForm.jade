@@ -7,7 +7,7 @@ head
             fetch("/path/delete/" + id, {
             method: "POST"
             }).then(data => {
-            location.reload();
+            location.reload(true);
             }).catch(e => {
             alert("Failed"+ e)
             })
@@ -21,7 +21,7 @@ head
             url: url
             })
             }).then(data => {
-            location.reload();
+            location.reload(true);
             }).catch(e => {
             alert("Failed"+ e)
             })
@@ -36,7 +36,7 @@ head
             method: method??"GET"
             })
             }).then(data => {
-            location.reload();
+            location.reload(true);
             }).catch(e => {
             alert("Failed"+ e)
             })
