@@ -21,13 +21,14 @@ script.
         fetch("/url/add/", {
           method: "POST",
           body: new URLSearchParams({
-          host: url,
+            host: url,
             method: method??"POST"
           })
         }).then(data => {
         location.reload(true);
-        }).catch(e => {
+        }).catch((e) => {
           alert("Failed"+ e)
+          location.reload(true);
         })
 
       }
