@@ -130,7 +130,7 @@ dist
 .pnp.*
 
 # db file
-# *.sqlite
+*.sqlite
 node_modules
 
 # Intilij idea
