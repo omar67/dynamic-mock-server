@@ -82,10 +82,7 @@ function getRequestConfig(url, req, method) {
   } else if (contentType.includes("x-www-form-urlencoded")) {
     // URL-encoded
     config = getUrlEncodedConfig(req.headers, req.body, method);
-  } else if (contentType === "application/json") {
-    // JSON
-    config = getJsonDataConfig(req.headers, req.body, method);
-  } else { // TODO here we're falling back to a contentType of application/json; is this fine?
+  } else if (contentType == "application/json") {
     // JSON
     config = getJsonDataConfig(req.headers, req.body, method);
   }
