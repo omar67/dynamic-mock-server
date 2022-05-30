@@ -32,6 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// System paths
 let paths = {
   "/": indexRouter,
   "/admin": adminRouter,
@@ -43,6 +44,17 @@ let paths = {
 initRouter(app, paths);
 
 // Catch all paths other than the predefined ones
+
+// Check if the path is a system path, so it doesn't call the listed servers
+app.use((req, res, next) => {
+  var flag = false;
+  for (const [key, value] of Object.entries(paths)) {
+    if (req.originalUrl === key) flag = true;
+  }
+  if (flag) return;
+  else next();
+});
+
 app.use(handleMockServer);
 
 // error logger
