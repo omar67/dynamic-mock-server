@@ -78,7 +78,11 @@ async function getRequest(req, urls, index) {
     if (isSuccess(response.status)) return response?.data ?? undefined;
     return await getRequest(req, urls, index + 1);
   } catch (e) {
-    logApiFailure(url, e.response.status, JSON.stringify(e));
+    logApiFailure(
+      url,
+      e?.response?.status ?? 404,
+      JSON.stringify(e ?? "No response is found!")
+    );
     return await getRequest(req, urls, index + 1);
   }
 }
@@ -110,7 +114,11 @@ async function postRequest(req, urls, index) {
     if (isSuccess(response.status)) return response?.data ?? undefined;
     else return await postRequest(req, urls, index + 1);
   } catch (e) {
-    logApiFailure(url, e.response.status, JSON.stringify(e));
+    logApiFailure(
+      url,
+      e?.response?.status ?? 404,
+      JSON.stringify(e ?? "No response is found!")
+    );
     return await postRequest(req, urls, index + 1);
   }
 }
@@ -141,7 +149,11 @@ async function patchRequest(req, urls, index) {
     if (isSuccess(response.status)) return response?.data ?? undefined;
     else return await patchRequest(req, urls, index + 1);
   } catch (e) {
-    logApiFailure(url, e.response.status, JSON.stringify(e));
+    logApiFailure(
+      url,
+      e?.response?.status ?? 404,
+      JSON.stringify(e ?? "No response is found!")
+    );
     return await patchRequest(req, urls, index + 1);
   }
 }
