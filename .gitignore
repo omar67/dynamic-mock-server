@@ -132,3 +132,6 @@ dist
 # db file
 # *.sqlite
 node_modules
+
+# Intilij idea
+.idea
