@@ -1,7 +1,7 @@
 const { Url } = require("../model/url");
 
-async function addUrl(host, method) {
-  return await Url.create({ host, method });
+async function addUrl(name, host) {
+  return await Url.create({ name, host });
 }
 
 async function deleteUrl(id) {

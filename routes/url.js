@@ -14,13 +14,14 @@ router.post("/delete/:id", async (req, res, next) => {
 });
 
 router.post("/add", (req, res, next) => {
-  const { host, method } = req.body;
+  const { name, host } = req.body;
   if (!host) return res.status(400).send("Missing host params");
-  addUrl(host, method ?? "POST")
+  addUrl(name, host)
     .then((d) => {
       res.status(201).send("Added successfully");
     })
     .catch((e) => {
+      console.log("Adding failure", e);
       res.status(400).send("Failed to add");
     });
 });

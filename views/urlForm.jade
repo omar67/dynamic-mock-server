@@ -12,17 +12,18 @@ script.
       }
       var handleForm = () => {
         let host = document.getElementById('url').value;
-        addUrl(host, host);
+        let name = document.getElementById('name').value;
+        addUrl(name, host);
       }
 
-      var addUrl = (url, method) => {
+      var addUrl = (name, url) => {
         if(!url)
           return alert("Please enter valid URL");
         fetch("/url/add/", {
           method: "POST",
           body: new URLSearchParams({
-            host: url,
-            method: method??"POST"
+            name: name,
+            host: url
           })
         }).then(data => {
         location.reload(true);
@@ -36,22 +37,34 @@ script.
 
 h1 URLs
 p The following URLs are being called to retrieve the data from the API. When the first URL fail to return data, the second URL is called.
-- if (urls.length == 0)
-  ul 
-    li No URLs added yet
-- else 
-  ol
+table.table
+  thead
+    tr
+      th(scope='col') ID
+      th(scope='col') Name
+      th(scope='col') URL
+  tbody
+    - if (urls.length == 0)
+        th(scope='row')
+            td No URLs found!
+
     each url in urls
-      li=url.host 
-        button(class="btn btn-success m-1", onclick='', disabled) <i class="bi bi-arrow-down-circle"></i>
-        button(class="btn btn-danger m-1", onclick='deleteUrl("'+url.id+'", "'+url.host+'")') Delete
-        button(class="btn btn-success m-1", onclick='', disabled) <i class="bi bi-arrow-up-circle"></i>
+        tr
+            th(scope='row')=url.id
+            th=url.name
+            td=url.host
+            td
+                button(class="btn btn-danger m-1", onclick='deleteUrl("'+url.id+'", "'+url.host+'")') Delete  
 
 h2 Add new URL
 p Adding a new base url to the list
   form( method="post") 
     div(class="input-group mb-3")      
+        span(class="input-group-text" id="basic-addon1" span) Name
+        input(class="form-control", id="name", name="name", type="text", placeholder="New SIT API", required="required") 
+    div(class="input-group mb-3")      
         span(class="input-group-text" id="basic-addon1" span) URL
         input(class="form-control", id="url", name="host", type="text", placeholder="http://example.com", required="required") 
-        button(class="btn btn-primary" type="submit" onclick='handleForm()') Add 
+      button(class="btn btn-primary" type="submit" onclick='handleForm()') Add 
+
 br
