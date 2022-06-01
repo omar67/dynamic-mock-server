@@ -3,7 +3,8 @@
   "version": "1.6.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "migrate": "nodemon ./bin/www migrate"
   },
   "dependencies": {
     "axios": "^0.27.2",

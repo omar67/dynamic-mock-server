@@ -18,7 +18,9 @@ const errorHandler = require("./controller/errorHandler");
 const { initRouter } = require("./routes/router");
 
 // init db
-db.sequelize.sync();
+if (process.argv.find((arg) => arg === "migrate"))
+  db.sequelize.sync({ force: true });
+else db.sequelize.sync();
 
 var app = express();
 
