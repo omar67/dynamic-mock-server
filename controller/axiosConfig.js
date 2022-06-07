@@ -75,17 +75,16 @@ function getRequestConfig(url, req, method) {
   delete req.headers["host"];
 
   var config = {};
-
   if (contentType.includes("form-data")) {
     // Form data
     config = getFormDataConfig(req.headers, req.body, method);
   } else if (contentType.includes("x-www-form-urlencoded")) {
     // URL-encoded
     config = getUrlEncodedConfig(req.headers, req.body, method);
-  } else if (contentType == "application/json") {
+  } else if (contentType.includes("application/json")) {
     // JSON
     config = getJsonDataConfig(req.headers, req.body, method);
-  }
+  } else config = getJsonDataConfig(req.headers, req.body, method);
   return config;
 }
 
